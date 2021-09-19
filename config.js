@@ -21,7 +21,7 @@ const auth = () => {
 // media upload methods
 
 const initMediaUpload = (client, pathToFile) => {
-    const mediaType = "video/mp4";
+    const mediaType = "image/jpeg";
     const mediaSize = fs.statSync(pathToFile).size
     return new Promise((resolve, reject) => {
         client.post("media/upload", {
@@ -81,7 +81,7 @@ const postReplyWithMedia = (client, mediaFilePath, replyTweet) => {
         .then((mediaId) => finalizeMediaUpload(client, mediaId))
         .then((mediaId) => {
             let statusObj = {
-                status: "Hi @" + replyTweet.user.screen_name + ", here's your video file!",
+                status: "Hi @" + replyTweet.user.screen_name + ", here's what Taylor thinks:",
                 in_reply_to_status_id: replyTweet.id_str,
                 media_ids: mediaId
             }
