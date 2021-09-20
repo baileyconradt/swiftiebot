@@ -58,7 +58,7 @@ client.stream('statuses/filter', { track: '@swiftie_bot' }, function (stream) {
     //code to return positive images for positive text
     if(happyTerms.some(term => tweet.text.includes(term))){
       var randomNumber2 = Math.floor(Math.random() * happyPicArray.length);
-
+      console.log('Taylor likes this one! <3');
       picPath = happyPicArray[randomNumber2];
     }
 
