@@ -2,8 +2,15 @@ const { auth, postReplyWithMedia, postReply } = require('./config.js');
 
 const client = auth();
 
+const fs = require('fs');
+
 client.stream('statuses/filter', { track: '@swiftie_bot' }, function (stream) {
   console.log("Searching for tweets...");
+
+  var Sentiment = require('sentiment');
+  var sentiment = new Sentiment();
+  //var result = sentiment.analyze('Cats are stupid.');
+  //console.dir(result.score);    // Score: -2, Comparative: -0.666
 
   // when a tweet is found
   stream.on('data', function (tweet) {
@@ -12,22 +19,19 @@ client.stream('statuses/filter', { track: '@swiftie_bot' }, function (stream) {
 
     console.log("Replying with Taylor pic!");
 
-    var happyTerms = [
-      'love',
-      'like',
-      'excited',
-      'cool',
-      'awesome',
-      'escstatic',
-      'glad',
-      'happy',
-      'sweet',
-      'wholesome',
-      'fantastic',
-      'amazing',
-      'incredible',
-      'queen'
-    ]
+    const dir = './happyPics';
+    let happyLength = 0;
+
+    fs.readdir(dir, (err, files) => {
+      happyLength = files.length;
+    });
+
+    const dir2 = './sadPics';
+    let sadLength = 0;
+
+    fs.readdir(dir2, (err, files) => {
+      sadLength = files.length;
+    });
 
     var happyPicArray = [
       'happyTaylor.jpeg',
@@ -46,23 +50,34 @@ client.stream('statuses/filter', { track: '@swiftie_bot' }, function (stream) {
       'annoyedTaylor.jpeg',
       'confusedTaylor.jpeg',
       'drunkTaylor.jpeg',
-      'happyTaylor.jpeg',
-      'heartTaylor.jpeg',
-      'loveTaylor.jpeg',
       'thinkingTaylor.jpeg'
     ];
 
-    var randomNumber = Math.floor(Math.random() * picArray.length);
-    var picPath = picArray[randomNumber];
+    var randomNumber;
+    // = Math.floor(Math.random() * picArray.length);
+    var picPath;
+    // = picArray[randomNumber];
+
+    var result = sentiment.analyze(tweet.text);
 
     //code to return positive images for positive text
-    if(happyTerms.some(term => tweet.text.includes(term))){
-      var randomNumber2 = Math.floor(Math.random() * happyPicArray.length);
+    //if(happyTerms.some(term => tweet.text.includes(term))){
+    if(result.score > 0){
+      var randomNumber2 = Math.floor(Math.random() * happyLength);
       console.log('Taylor likes this one! <3');
-      picPath = happyPicArray[randomNumber2];
+      picPath = './happyPics/' + happyPicArray[randomNumber2];
+    }
+    else{
+      console.log('Taylor does not like this one! >:(');
+      randomNumber = Math.floor(Math.random() * sadLength);
+      picPath = './sadPics/' + picArray[randomNumber];
     }
 
-    postReplyWithMedia(client, "./sample-media/" + picPath, tweet);
+    //code to return album-specific images
+
+
+
+    postReplyWithMedia(client, picPath, tweet);
 
     stream.on('error', function (error) {
       console.log(error);

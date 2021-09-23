@@ -81,7 +81,8 @@ const postReplyWithMedia = (client, mediaFilePath, replyTweet) => {
         .then((mediaId) => finalizeMediaUpload(client, mediaId))
         .then((mediaId) => {
             let statusObj = {
-                status: "Hi @" + replyTweet.user.screen_name + ", here's what Taylor thinks:",
+
+                status: "Hi @" + replyTweet.user.screen_name + ", the old Taylor can't come to the phone right now so you get me!",
                 in_reply_to_status_id: replyTweet.id_str,
                 media_ids: mediaId
             }

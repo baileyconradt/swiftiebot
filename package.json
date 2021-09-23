@@ -25,6 +25,7 @@
     "dotenv": "^8.2.0",
     "heroku-dotenv": "^0.4.1",
     "request": "^2.88.2",
+    "sentiment": "^5.0.2",
     "twitter": "^1.7.1"
   }
 }
