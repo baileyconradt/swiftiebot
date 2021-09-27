@@ -1,17 +1,45 @@
-const { auth, postReplyWithMedia, postReply } = require('./config.js');
+const { auth, postReplyWithMedia, postReply, postTweet } = require('./config.js');
 
 const client = auth();
 
 const fs = require('fs');
+const csv = require("csvtojson");
+const lyrics = require("./lyrics.json")
+const { fileURLToPath } = require('url');
 
 
 //TODO: 
 //code to return album-specific images
 
-//code to return random quote messages based on sentiment
-
 //random lyrics every 22 min
+const getRandomIndex = length => Math.floor(Math.random() * length);
+var minutes = 22, interval = minutes * 60 * 1000;
+let tweetLyric = "";
 
+setInterval(function() {
+
+  //parse lyrics json
+  let randomAlbum = getRandomIndex(Object.keys(lyrics).length);
+  albums = Object.keys(lyrics);
+  album = albums[randomAlbum];
+  //random song
+  let randomSong = getRandomIndex(Object.keys(lyrics[album]).length);
+  songs = Object.keys(lyrics[album]);
+  song = songs[randomSong];
+  //random lyric
+  let randomLyric = getRandomIndex(song.length);
+  songLyrics = lyrics[album][song];
+  songLyric = songLyrics[randomLyric];
+
+  tweetLyric = songLyric.lyric;
+
+  postTweet(client, tweetLyric);
+
+}, interval);
+  
+
+
+//listen for tagged tweets, respond with image of Taylor
 client.stream('statuses/filter', { track: '@swiftie_bot' }, function (stream) {
   console.log("Searching for tweets...");
 

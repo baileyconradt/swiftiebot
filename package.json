@@ -22,6 +22,7 @@
   "homepage": "https://github.com/pguduguntla/twitter-bot-test#readme",
   "dependencies": {
     "bluebird": "^3.7.2",
+    "csvtojson": "^2.0.10",
     "dotenv": "^8.2.0",
     "heroku-dotenv": "^0.4.1",
     "request": "^2.88.2",

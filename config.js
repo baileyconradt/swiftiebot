@@ -4,6 +4,10 @@ const Promise = require('bluebird')
 const dotenv = require("dotenv")
 dotenv.config()
 
+//Random quote messages based on sentiment
+const happyQuotes = [
+    
+]
 
 // auth methods
 const auth = () => {
@@ -117,4 +121,22 @@ const postReply = (client, message, replyTweet) => {
     });
 }
 
-module.exports = { auth, postReplyWithMedia, postReply };
+const postTweet = (client, message) => {
+
+    let statusObj = {
+        status: message
+    }
+
+    client.post('statuses/update', statusObj, (error, tweetReply, response) => {
+
+        //if we get an error print it out
+        if (error) {
+            console.log(error);
+        }
+
+        //print the text of the tweet we sent out
+        console.log('tweeting new lyric: ', tweetReply.text);
+    });
+}
+
+module.exports = { auth, postReplyWithMedia, postReply, postTweet };
