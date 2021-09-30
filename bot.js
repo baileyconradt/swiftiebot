@@ -13,7 +13,7 @@ const { fileURLToPath } = require('url');
 
 //random lyrics every 22 min
 const getRandomIndex = length => Math.floor(Math.random() * length);
-var minutes = 22, interval = minutes * 60 * 1000;
+var minutes = 60, interval = minutes * 60 * 1000;
 let tweetLyric = "";
 
 setInterval(function() {
